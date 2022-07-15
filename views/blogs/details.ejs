@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/header.ejs') %>
+  <body>
+    <%- include('../partials/nav.ejs') %>
+    <h1>Detail page</h1>
+
+    <h3 class="heading-3"><%= blog.title %></h3>
+    <p><%= blog.snippet%></p>
+    <p><%= blog.body%></p>
+    <button class="delete" data-id="<%= blog._id %>">Delete</button>
+    <a href="/blogs/edit/<%= blog._id %>">
+      <button>edit</button>
+    </a>
+
+    <%- include('../partials/footer.ejs') %>
+
+    <script>
+      const trash = document.querySelector('button.delete');
+      trash.addEventListener('click', (e) => {
+        const endPoint = `/blogs/${trash.dataset.id}`;
+        fetch(endPoint, {
+          method: 'DELETE',
+        })
+          .then((response) => response.json())
+          .then((data) => (window.location.href = data.redirect))
+          .catch((err) => console.log(err));
+      });
+    </script>
+  </body>
+</html>
